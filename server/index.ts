@@ -12,6 +12,7 @@ import { TOPICS } from "./data/topics.ts"
 import { MODELS } from "./data/models.ts"
 import { LANGUAGES } from "./data/languages.ts"
 import { CompareService } from "./services/CompareService.ts"
+import { OpenRouterService } from "./services/OpenRouterService.ts"
 import { CompareRequest } from "./schema/api.ts"
 import type { CompareResponse } from "./schema/api.ts"
 
@@ -135,12 +136,23 @@ const app = HttpRouter.empty.pipe(
   ),
 )
 
-const appLayer = HttpServer.serve(app).pipe(
-  Layer.provide(BunHttpServer.layer({ port: 3001 })),
-  Layer.provide(FetchHttpClient.layer),
-  Layer.provide(CompareService.Default),
+// Build layer graph: provide HttpClient to services that need it
+const openRouterLayer = Layer.provide(
+  OpenRouterService.Default,
+  FetchHttpClient.layer,
 )
+
+const compareLayer = Layer.provide(
+  CompareService.Default,
+  openRouterLayer,
+)
+
+const serverLayer = Layer.provide(
+  HttpServer.serve(app),
+  Layer.mergeAll(compareLayer, BunHttpServer.layer({ port: 3001 })),
+)
+
 // Run the server
-Effect.runFork(
-  Layer.launch(appLayer) as Effect.Effect<never, never, never>,
-)
+Effect.runPromise(
+  Layer.launch(serverLayer) as Effect.Effect<never, never, never>,
+).then(() => console.log("Server started on http://localhost:3001"))
