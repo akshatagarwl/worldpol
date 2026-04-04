@@ -17,9 +17,6 @@ importers:
       '@effect/platform-node':
         specifier: ^0.70
         version: 0.70.0(@effect/platform@0.84.11(effect@3.21.0))(effect@3.21.0)
-      '@effect/schema':
-        specifier: ^0.75
-        version: 0.75.5(effect@3.21.0)
       '@fontsource-variable/geist':
         specifier: ^5.2.8
         version: 5.2.8
@@ -279,12 +276,6 @@ packages:
     resolution: {integrity: sha512-u3eURhaF38e8jqq/JC2NW9EDHUFVDETD/JLEFtFi7N6RnAUF90qaC8sRcoK5xe8UAo3/fJDQ+sEfDqYonUa30w==}
     peerDependencies:
       effect: ^3.16.7
-
-  '@effect/schema@0.75.5':
-    resolution: {integrity: sha512-TQInulTVCuF+9EIbJpyLP6dvxbQJMphrnRqgexm/Ze39rSjfhJuufF7XvU3SxTgg3HnL7B/kpORTJbHhlE6thw==}
-    deprecated: this package has been merged into the main effect package
-    peerDependencies:
-      effect: ^3.9.2
 
   '@esbuild-kit/core-utils@3.3.2':
     resolution: {integrity: sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ==}
@@ -3424,11 +3415,6 @@ snapshots:
       find-my-way-ts: 0.1.6
       msgpackr: 1.11.9
       multipasta: 0.2.7
-
-  '@effect/schema@0.75.5(effect@3.21.0)':
-    dependencies:
-      effect: 3.21.0
-      fast-check: 3.23.2
 
   '@esbuild-kit/core-utils@3.3.2':
     dependencies:

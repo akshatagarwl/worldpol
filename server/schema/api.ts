@@ -1,4 +1,4 @@
-import { Schema } from "@effect/schema";
+import { Schema } from "effect";
 
 export const CompareRequest = Schema.Struct({
   topic_id: Schema.String.pipe(Schema.nonEmptyString()),

@@ -8,14 +8,14 @@ import {
 } from "@effect/platform";
 import { NodeHttpServer } from "@effect/platform-node";
 import { createServer } from "node:http";
-import { Schema } from "@effect/schema";
-import { TOPICS } from "./data/topics.js";
-import { MODELS } from "./data/models.js";
-import { LANGUAGES } from "./data/languages.js";
-import { CompareService } from "./services/CompareService.js";
-import { OpenRouterService } from "./services/OpenRouterService.js";
-import { CompareRequest } from "./schema/api.js";
-import type { CompareResponse } from "./schema/api.js";
+import { Schema } from "effect";
+import { TOPICS } from "./data/topics";
+import { MODELS } from "./data/models";
+import { LANGUAGES } from "./data/languages";
+import { CompareService } from "./services/CompareService";
+import { OpenRouterService } from "./services/OpenRouterService";
+import { CompareRequest } from "./schema/api";
+import type { CompareResponse } from "./schema/api";
 
 import { createHash } from "node:crypto";
 
@@ -23,40 +23,68 @@ function md5Sync(input: string): string {
   return createHash("md5").update(input).digest("hex");
 }
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "http://localhost:5173",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-};
-
 const app = HttpRouter.empty.pipe(
   // CORS preflight
-  HttpRouter.options("/api/*", HttpServerResponse.empty({ status: 204, headers: corsHeaders })),
+  HttpRouter.options(
+    "/api/*",
+    Effect.gen(function* () {
+      const req = yield* HttpServerRequest.HttpServerRequest;
+      const origin = req.headers["origin"] ?? "*";
+      return HttpServerResponse.empty({
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": origin,
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
+        },
+      });
+    }),
+  ),
 
   // GET /api/topics
   HttpRouter.get(
     "/api/topics",
-    Effect.succeed(HttpServerResponse.unsafeJson(TOPICS, { headers: corsHeaders })),
+    Effect.gen(function* () {
+      const req = yield* HttpServerRequest.HttpServerRequest;
+      const origin = req.headers["origin"] ?? "*";
+      return HttpServerResponse.unsafeJson(TOPICS, {
+        headers: { "Access-Control-Allow-Origin": origin },
+      });
+    }),
   ),
 
   // GET /api/models
   HttpRouter.get(
     "/api/models",
-    Effect.succeed(HttpServerResponse.unsafeJson(MODELS, { headers: corsHeaders })),
+    Effect.gen(function* () {
+      const req = yield* HttpServerRequest.HttpServerRequest;
+      const origin = req.headers["origin"] ?? "*";
+      return HttpServerResponse.unsafeJson(MODELS, {
+        headers: { "Access-Control-Allow-Origin": origin },
+      });
+    }),
   ),
 
   // GET /api/languages
   HttpRouter.get(
     "/api/languages",
-    Effect.succeed(HttpServerResponse.unsafeJson(LANGUAGES, { headers: corsHeaders })),
+    Effect.gen(function* () {
+      const req = yield* HttpServerRequest.HttpServerRequest;
+      const origin = req.headers["origin"] ?? "*";
+      return HttpServerResponse.unsafeJson(LANGUAGES, {
+        headers: { "Access-Control-Allow-Origin": origin },
+      });
+    }),
   ),
 
   // POST /api/compare
   HttpRouter.post(
     "/api/compare",
     Effect.gen(function* () {
-      const request = yield* HttpServerRequest.HttpServerRequest;
-      const body = yield* request.json;
+      const req = yield* HttpServerRequest.HttpServerRequest;
+      const origin = req.headers["origin"] ?? "*";
+      const corsHeaders = { "Access-Control-Allow-Origin": origin };
+      const body = yield* req.json;
 
       const parsed = Schema.decodeUnknownEither(CompareRequest)(body);
       if (parsed._tag === "Left") {
@@ -119,9 +147,7 @@ const app = HttpRouter.empty.pipe(
   // Catch-all 404
   HttpRouter.all(
     "/*",
-    Effect.succeed(
-      HttpServerResponse.unsafeJson({ error: "Not found" }, { status: 404, headers: corsHeaders }),
-    ),
+    Effect.succeed(HttpServerResponse.unsafeJson({ error: "Not found" }, { status: 404 })),
   ),
 );
 

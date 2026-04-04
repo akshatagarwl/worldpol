@@ -9,6 +9,3 @@ export const responses = sqliteTable("responses", {
   responseText: text("response_text").notNull(),
   createdAt: text("created_at").notNull(),
 });
-
-export type ResponseRow = typeof responses.$inferSelect;
-export type NewResponse = typeof responses.$inferInsert;
