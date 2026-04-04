@@ -1,5 +1,5 @@
 import { Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface CompareButtonProps {
   onClick: () => void;
@@ -9,18 +9,13 @@ interface CompareButtonProps {
 
 export function CompareButton({ onClick, disabled, loading }: CompareButtonProps) {
   return (
-    <button
+    <Button
       onClick={onClick}
       disabled={disabled || loading}
-      className={cn(
-        "flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3 text-base font-semibold transition-colors",
-        disabled || loading
-          ? "cursor-not-allowed bg-muted text-muted-foreground"
-          : "bg-primary text-primary-foreground hover:bg-primary/90",
-      )}
+      className="flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3 text-base font-semibold"
     >
       {loading && <Loader2 className="h-4 w-4 animate-spin" />}
       {loading ? "Comparing..." : "Compare Responses"}
-    </button>
+    </Button>
   );
 }

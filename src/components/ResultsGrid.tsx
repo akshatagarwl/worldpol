@@ -1,6 +1,17 @@
 import type { CompareResponse, Language, Model } from "@/lib/types";
 import { RTL_CODES } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@/components/ui/table";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
 
 interface ResultsGridProps {
   data: CompareResponse;
@@ -13,20 +24,25 @@ interface ResultsGridProps {
 function ResponseCell({ response, cached, langCode }: { response: string; cached: boolean; langCode: string }) {
   const isRtl = RTL_CODES.has(langCode);
   return (
-    <div
+    <ScrollArea
       className={cn(
-        "relative h-64 overflow-y-auto rounded-lg border border-border bg-muted/50 p-3 text-sm leading-relaxed",
+        "relative h-64 rounded-lg border border-border bg-muted/50",
         isRtl && "text-right",
       )}
       dir={isRtl ? "rtl" : "ltr"}
     >
-      {cached && (
-        <span className="absolute top-2 right-2 inline-flex items-center rounded-md bg-amber-900/50 px-1.5 py-0.5 text-[10px] font-medium text-amber-400">
-          Cached
-        </span>
-      )}
-      <p className="whitespace-pre-wrap text-foreground">{response}</p>
-    </div>
+      <div className="p-3 text-sm leading-relaxed">
+        {cached && (
+          <Badge
+            variant="outline"
+            className="absolute top-2 right-2 bg-amber-900/50 text-[10px] text-amber-400"
+          >
+            Cached
+          </Badge>
+        )}
+        <p className="whitespace-pre-wrap text-foreground">{response}</p>
+      </div>
+    </ScrollArea>
   );
 }
 
@@ -46,62 +62,63 @@ export function ResultsGrid({
     );
 
   return (
-    <div className="rounded-xl border border-border bg-card p-5">
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold text-card-foreground">Results</h2>
-        <p className="text-sm text-muted-foreground">
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold">Results</CardTitle>
+        <CardDescription>
           Topic: <span className="font-medium text-foreground">{data.topic.name}</span>
-        </p>
-      </div>
-      <div className="overflow-x-auto">
-        <div className="min-w-fit">
-          {/* Header row */}
-          <div className="grid gap-2" style={{ gridTemplateColumns: `minmax(120px, 1fr) repeat(${selectedLangs.length}, minmax(280px, 1fr))` }}>
-            <div className="p-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Model
-            </div>
-            {selectedLangs.map((lang) => (
-              <div key={lang.code} className="p-2 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                {lang.native_name}
-                <span className="ml-1 text-muted-foreground/60">({lang.name})</span>
-              </div>
-            ))}
-          </div>
-          {/* Data rows */}
-          {selectedModels.map((model) => (
-            <div
-              key={model.id}
-              className="grid gap-2 border-t border-border pt-2 mt-2"
-              style={{ gridTemplateColumns: `minmax(120px, 1fr) repeat(${selectedLangs.length}, minmax(280px, 1fr))` }}
-            >
-              <div className="flex items-start p-2">
-                <div>
-                  <div className="text-sm font-medium text-card-foreground">{model.name}</div>
-                  <div className="text-xs text-muted-foreground">{model.origin_country}</div>
-                </div>
-              </div>
-              {selectedLangs.map((lang) => {
-                const result = getResponse(model.id, lang.code);
-                return (
-                  <div key={lang.code} className="p-1">
-                    {result ? (
-                      <ResponseCell
-                        response={result.response}
-                        cached={result.cached}
-                        langCode={lang.code}
-                      />
-                    ) : (
-                      <div className="flex h-64 items-center justify-center rounded-lg border border-dashed border-border text-sm text-muted-foreground">
-                        No data
-                      </div>
-                    )}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="min-w-[120px] text-xs font-semibold uppercase tracking-wider">
+                Model
+              </TableHead>
+              {selectedLangs.map((lang) => (
+                <TableHead
+                  key={lang.code}
+                  className="min-w-[280px] text-center text-xs font-semibold uppercase tracking-wider"
+                >
+                  {lang.native_name}
+                  <span className="ml-1 text-muted-foreground/60">({lang.name})</span>
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {selectedModels.map((model) => (
+              <TableRow key={model.id}>
+                <TableCell className="min-w-[120px]">
+                  <div>
+                    <div className="text-sm font-medium text-card-foreground">{model.name}</div>
+                    <div className="text-xs text-muted-foreground">{model.origin_country}</div>
                   </div>
-                );
-              })}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+                </TableCell>
+                {selectedLangs.map((lang) => {
+                  const result = getResponse(model.id, lang.code);
+                  return (
+                    <TableCell key={lang.code} className="min-w-[280px] p-1">
+                      {result ? (
+                        <ResponseCell
+                          response={result.response}
+                          cached={result.cached}
+                          langCode={lang.code}
+                        />
+                      ) : (
+                        <div className="flex h-64 items-center justify-center rounded-lg border border-dashed border-border text-sm text-muted-foreground">
+                          No data
+                        </div>
+                      )}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   );
 }
