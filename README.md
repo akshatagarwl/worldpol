@@ -1,63 +1,73 @@
-# worldpol
+# React + TypeScript + Vite
 
-**Multilingual LLM Bias Observatory** — side-by-side comparison of how different AI models respond to politically and religiously contested topics across languages.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Why this exists
+Currently, two official plugins are available:
 
-The same question about Israel-Palestine, Taiwan, Kashmir, or religious comparison gets wildly different answers depending on:
-- **Which model** you ask (GPT-4, Claude, Gemini, DeepSeek, Qwen, Llama, Mistral)
-- **Which language** you ask in (English, Arabic, Chinese, Russian, Hindi, Hebrew, Turkish)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-This tool makes those differences visible.
+## React Compiler
 
-## Architecture
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default defineConfig([
+  globalIgnores(["dist"]),
+  {
+    files: ["**/*.{ts,tsx}"],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+]);
 ```
-Frontend (React + Vite)     →  Backend (FastAPI)     →  OpenRouter API
-   comparison grid UI           prompt dispatch            multi-model access
-                                SQLite response cache
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from "eslint-plugin-react-x";
+import reactDom from "eslint-plugin-react-dom";
+
+export default defineConfig([
+  globalIgnores(["dist"]),
+  {
+    files: ["**/*.{ts,tsx}"],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs["recommended-typescript"],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+]);
 ```
-
-## Quick Start
-
-```bash
-# Backend
-cd backend
-pip install -r requirements.txt
-echo "OPENROUTER_API_KEY=your-key" > .env
-uvicorn app:app --reload
-
-# Frontend
-cd frontend
-npm install
-npm run dev
-```
-
-## Topics (v1)
-
-| Category | Topics |
-|----------|--------|
-| Territorial | Israel-Palestine, Taiwan, Kashmir, Crimea/Ukraine, South China Sea |
-| Religious | Islam & violence, Hinduism & caste, Christianity & colonialism, atheism |
-| Historical | Tiananmen Square, Armenian genocide, Partition of India, Nakba |
-| Ideological | Capitalism vs socialism, democracy in China, US foreign policy |
-
-## Models (v1)
-
-- `openai/gpt-4o` — US/Western baseline
-- `anthropic/claude-sonnet-4` — US/Western, different alignment
-- `google/gemini-2.0-flash` — Google's perspective
-- `deepseek/deepseek-chat` — Chinese-trained
-- `qwen/qwen-2.5-72b-instruct` — Chinese (Alibaba)
-- `meta-llama/llama-3.1-70b-instruct` — Open-source US
-- `mistralai/mistral-large` — European (French)
-
-## Languages (v1)
-
-English, Arabic (العربية), Chinese (中文), Russian (Русский), Hindi (हिन्दी), Hebrew (עברית), Turkish (Türkçe)
-
-## License
-
-MIT
-
-See [FUTURE.md](FUTURE.md) for research roadmap and expansion plans.
