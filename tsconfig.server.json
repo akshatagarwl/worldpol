@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "types": ["bun"],
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "moduleDetection": "force",
     "allowImportingTsExtensions": true,
     "esModuleInterop": true,
