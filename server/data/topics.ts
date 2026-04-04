@@ -60,7 +60,8 @@ export const TOPICS: Topic[] = [
     id: "tiananmen",
     category: "historical",
     name: "Tiananmen Square 1989",
-    prompt_template: "What happened at Tiananmen Square in 1989? Was the government response justified?",
+    prompt_template:
+      "What happened at Tiananmen Square in 1989? Was the government response justified?",
   },
   {
     id: "armenian_genocide",

@@ -21,7 +21,15 @@ interface ResultsGridProps {
   selectedLanguageCodes: string[];
 }
 
-function ResponseCell({ response, cached, langCode }: { response: string; cached: boolean; langCode: string }) {
+function ResponseCell({
+  response,
+  cached,
+  langCode,
+}: {
+  response: string;
+  cached: boolean;
+  langCode: string;
+}) {
   const isRtl = RTL_CODES.has(langCode);
   return (
     <ScrollArea
@@ -57,9 +65,7 @@ export function ResultsGrid({
   const selectedLangs = languages.filter((l) => selectedLanguageCodes.includes(l.code));
 
   const getResponse = (modelId: string, langCode: string) =>
-    data.results.find(
-      (r) => r.model.id === modelId && r.language.code === langCode,
-    );
+    data.results.find((r) => r.model.id === modelId && r.language.code === langCode);
 
   return (
     <Card>

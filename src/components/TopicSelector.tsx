@@ -36,10 +36,7 @@ export function TopicSelector({ topics, selectedTopic, onSelect }: TopicSelector
           return (
             <div key={category}>
               <div className="mb-2 flex items-center gap-2">
-                <Badge
-                  variant="outline"
-                  className={cn(colors.bg, colors.text, colors.border)}
-                >
+                <Badge variant="outline" className={cn(colors.bg, colors.text, colors.border)}>
                   {categoryLabels[category] ?? category}
                 </Badge>
               </div>

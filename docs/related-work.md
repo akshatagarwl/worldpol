@@ -7,6 +7,7 @@ Prior art in multilingual LLM bias evaluation. These papers explore similar terr
 ## Directly Related
 
 ### 1. Do Political Opinions Transfer Between Western Languages?
+
 - **Authors:** Franziska Weeber, Tanise Ceron, Sebastian Padó
 - **Published:** 2025-08-07
 - **arXiv:** [2508.05553](https://arxiv.org/abs/2508.05553)
@@ -15,6 +16,7 @@ Prior art in multilingual LLM bias evaluation. These papers explore similar terr
 - **Gap:** Limited to Western languages only. Static analysis, not a living tool.
 
 ### 2. On the Alignment of Large Language Models with Global Human Opinion
+
 - **Authors:** Yang Liu, Masahiro Kaneko, Chenhui Chu
 - **Published:** 2025-09-01
 - **arXiv:** [2509.01418](https://arxiv.org/abs/2509.01418)
@@ -23,6 +25,7 @@ Prior art in multilingual LLM bias evaluation. These papers explore similar terr
 - **Gap:** Frames as "alignment" not bias measurement. No interactive exploration.
 
 ### 3. Faux Polyglot: A Study on Information Disparity in Multilingual Large Language Models
+
 - **Authors:** Nikhil Sharma, Kenton Murray, Ziang Xiao
 - **Published:** 2024-07-07
 - **arXiv:** [2407.05502](https://arxiv.org/abs/2407.05502)
@@ -31,6 +34,7 @@ Prior art in multilingual LLM bias evaluation. These papers explore similar terr
 - **Gap:** Focuses on factual disparity rather than opinion/political bias.
 
 ### 4. Multilingual ≠ Multicultural: Evaluating Gaps Between Multilingual Capabilities and Cultural Alignment in LLMs
+
 - **Authors:** Jonathan Rystrøm, Hannah Rose Kirk, Scott Hale
 - **Published:** 2025-02-23
 - **arXiv:** [2502.16534](https://arxiv.org/abs/2502.16534)
@@ -39,6 +43,7 @@ Prior art in multilingual LLM bias evaluation. These papers explore similar terr
 - **Gap:** Evaluative paper, not a tool. Good framing to cite though.
 
 ### 5. MENAValues: Evaluating Cultural Alignment and Multilingual Bias in LLMs
+
 - **Authors:** Pardis Sadat Zahraei, Ehsaneddin Asgari
 - **Published:** 2025-10-15
 - **arXiv:** [2510.13154](https://arxiv.org/abs/2510.13154)
@@ -51,24 +56,28 @@ Prior art in multilingual LLM bias evaluation. These papers explore similar terr
 ## Tangentially Related
 
 ### 6. CulFiT: A Fine-grained Cultural-aware LLM Training Paradigm via Multilingual Critique Data Synthesis
+
 - **Authors:** Ruixiang Feng, Shen Gao, Xiuying Chen et al.
 - **Published:** 2025-05-26
 - **arXiv:** [2505.19484](https://arxiv.org/abs/2505.19484)
 - **Relevance:** ⭐⭐⭐ — Training paradigm to reduce cultural bias. Demonstrates the problem worldpol measures.
 
 ### 7. Self-Alignment: Improving Alignment of Cultural Values in LLMs via In-Context Learning
+
 - **Authors:** Rochelle Choenni, Ekaterina Shutova
 - **Published:** 2024-08-29
 - **arXiv:** [2408.16482](https://arxiv.org/abs/2408.16482)
 - **Relevance:** ⭐⭐⭐ — Studies whether in-context learning can adjust LLM responses to cultural values. Potential mitigation strategy for biases worldpol detects.
 
 ### 8. Reasoning Boosts Opinion Alignment in LLMs
+
 - **Authors:** Frédéric Berdoz, Yann Billeter, Yann Vonlanthen et al.
 - **Published:** 2026-03-01
 - **arXiv:** [2603.01214](https://arxiv.org/abs/2603.01214)
 - **Relevance:** ⭐⭐⭐ — Shows that reasoning (CoT) changes opinion alignment. Implication: worldpol results may vary depending on prompting strategy.
 
 ### 9. Fine-Grained Interpretation of Political Opinions in Large Language Models
+
 - **Authors:** Jingyu Hu, Mengyue Yang, Mengnan Du et al.
 - **Published:** 2025-06-05
 - **arXiv:** [2506.04774](https://arxiv.org/abs/2506.04774)
@@ -78,14 +87,14 @@ Prior art in multilingual LLM bias evaluation. These papers explore similar terr
 
 ## What Makes worldpol Different
 
-| Dimension | Existing Papers | worldpol |
-|-----------|----------------|----------|
-| Format | Static benchmark / paper | Live interactive observatory |
-| Models | 1–3 models per study | 7 models compared side-by-side |
-| Languages | Typically 2–5 | 7 languages systematically |
-| Topics | Narrow (gender, politics) | 12 diverse topics |
-| Reproducibility | Code dumps / datasets | Running web app with cached results |
-| Audience | Researchers | Researchers + general public |
-| Temporal | Snapshot in time | Can re-run as models update |
+| Dimension       | Existing Papers           | worldpol                            |
+| --------------- | ------------------------- | ----------------------------------- |
+| Format          | Static benchmark / paper  | Live interactive observatory        |
+| Models          | 1–3 models per study      | 7 models compared side-by-side      |
+| Languages       | Typically 2–5             | 7 languages systematically          |
+| Topics          | Narrow (gender, politics) | 12 diverse topics                   |
+| Reproducibility | Code dumps / datasets     | Running web app with cached results |
+| Audience        | Researchers               | Researchers + general public        |
+| Temporal        | Snapshot in time          | Can re-run as models update         |
 
 The research space is active but fragmented. worldpol's unique contribution is being a **living, comparative tool** rather than a one-off evaluation.

@@ -2,16 +2,16 @@
 
 ## Current Stack -> New Stack
 
-| Layer | Current | New |
-|-------|---------|-----|
-| Language | Python 3.14 + JS (JSX) | TypeScript |
-| Frontend | React 19 + Vite 8 + Tailwind 4 | React 19 + Vite+ + Tailwind 4 + shadcn/ui |
-| Backend | FastAPI + uvicorn | Bun + Effect HTTP server |
-| API Client | httpx (Python) / fetch (JS) | Effect.ts HTTP client |
-| Database | SQLite via aiosqlite | SQLite via better-sqlite3 |
-| State Mgmt | React useState | React hooks + Effect API layer |
-| Toolchain | npm + vite + manual | Vite+ (vp) |
-| Runtime | Python + Node | Bun |
+| Layer      | Current                        | New                                       |
+| ---------- | ------------------------------ | ----------------------------------------- |
+| Language   | Python 3.14 + JS (JSX)         | TypeScript                                |
+| Frontend   | React 19 + Vite 8 + Tailwind 4 | React 19 + Vite+ + Tailwind 4 + shadcn/ui |
+| Backend    | FastAPI + uvicorn              | Bun + Effect HTTP server                  |
+| API Client | httpx (Python) / fetch (JS)    | Effect.ts HTTP client                     |
+| Database   | SQLite via aiosqlite           | SQLite via better-sqlite3                 |
+| State Mgmt | React useState                 | React hooks + Effect API layer            |
+| Toolchain  | npm + vite + manual            | Vite+ (vp)                                |
+| Runtime    | Python + Node                  | Bun                                       |
 
 ## Architecture
 
@@ -63,16 +63,19 @@ worldpol/
 ## Effect.ts Services
 
 OpenRouterService:
+
 - Dependencies: HttpClient
 - chatCompletion(model, messages) -> Effect of response or OpenRouterError
 - Layer: Live with API key from env
 
 CacheService:
+
 - Dependencies: none (better-sqlite3)
 - get(key), set(key, value), init()
 - Layer: Live with DB path
 
 CompareService:
+
 - Dependencies: OpenRouterService + CacheService
 - compare(topicId, modelIds, langCodes) -> Effect of results or CompareError
 - Layer: Composed from OpenRouter + Cache layers
@@ -80,12 +83,12 @@ CompareService:
 ## Data Flow
 
 Browser -> Vite dev server (:5173)
-  -> /api/* proxied to Bun Effect server (:3001)
-  -> CompareService.compare()
-    -> CacheService.get() -> hit? return cached
-    -> miss -> OpenRouterService.chatCompletion()
-    -> CacheService.set()
-    -> return result
+-> /api/\* proxied to Bun Effect server (:3001)
+-> CompareService.compare()
+-> CacheService.get() -> hit? return cached
+-> miss -> OpenRouterService.chatCompletion()
+-> CacheService.set()
+-> return result
 
 ## Key Decisions
 

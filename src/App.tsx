@@ -32,7 +32,7 @@ function App() {
         setError(err instanceof Error ? err.message : "Failed to load data");
       }
     }
-    load();
+    void load();
   }, []);
 
   const toggleModel = useCallback((modelId: string) => {

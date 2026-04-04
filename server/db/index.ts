@@ -1,13 +1,13 @@
-import { drizzle } from "drizzle-orm/bun-sqlite"
-import { Database } from "bun:sqlite"
-import { resolve } from "node:path"
-import * as schema from "./schema.ts"
+import { drizzle } from "drizzle-orm/better-sqlite3";
+import Database from "better-sqlite3";
+import { resolve } from "node:path";
+import * as schema from "./schema";
 
-const dbPath = resolve(process.cwd(), "cache.db")
-const sqlite = new Database(dbPath)
+const dbPath = resolve(process.cwd(), "cache.db");
+const sqlite = new Database(dbPath);
 
 // Create table if not exists
-sqlite.run(`
+sqlite.exec(`
   CREATE TABLE IF NOT EXISTS responses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     topic_id TEXT NOT NULL,
@@ -18,6 +18,6 @@ sqlite.run(`
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     UNIQUE(topic_id, model_id, language_code)
   )
-`)
+`);
 
-export const db = drizzle(sqlite, { schema })
+export const db = drizzle(sqlite, { schema });

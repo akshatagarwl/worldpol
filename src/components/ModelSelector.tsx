@@ -50,10 +50,7 @@ export function ModelSelector({
                     : "border-border bg-secondary hover:bg-secondary/80",
                 )}
               >
-                <Checkbox
-                  checked={isSelected}
-                  onCheckedChange={() => onToggle(model.id)}
-                />
+                <Checkbox checked={isSelected} onCheckedChange={() => onToggle(model.id)} />
                 <span className="text-lg">{flag}</span>
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-medium text-card-foreground">
