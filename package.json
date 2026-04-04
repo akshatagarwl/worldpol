@@ -11,8 +11,8 @@
     "test": "vp test",
     "lint": "vp lint",
     "fmt": "vp fmt",
-    "dev:server": "node --import tsx server/index.ts",
-    "dev:all": "node --import tsx server/index.ts & vp dev"
+    "dev:server": "node --env-file=.env --import tsx server/index.ts",
+    "dev:all": "node --env-file=.env --import tsx server/index.ts & vp dev"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
