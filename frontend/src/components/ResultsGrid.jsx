@@ -1,3 +1,5 @@
+import { Fragment } from 'react';
+
 const rtlLanguages = ['ar', 'he'];
 
 function ResponseCell({ result, language }) {
@@ -11,13 +13,10 @@ function ResponseCell({ result, language }) {
     );
   }
 
-  if (result.loading) {
+  if (result.error) {
     return (
-      <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 h-64 flex items-center justify-center">
-        <svg className="animate-spin h-6 w-6 text-gray-500" viewBox="0 0 24 24" fill="none">
-          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-        </svg>
+      <div className="bg-gray-800/50 border border-red-900/30 rounded-lg p-4 h-64 flex items-center justify-center">
+        <div className="text-red-400 text-sm text-center">{result.error}</div>
       </div>
     );
   }
@@ -26,7 +25,7 @@ function ResponseCell({ result, language }) {
     <div className="bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden h-64 flex flex-col">
       <div className="flex items-center justify-between px-3 py-2 bg-gray-800 border-b border-gray-700">
         <span className="text-xs font-medium text-gray-300 truncate">
-          {result.model_name} · {language.native_name}
+          {result.model?.name} · {language.native_name || language.name}
         </span>
         <div className="flex gap-1">
           {result.cached && (
@@ -51,26 +50,32 @@ export default function ResultsGrid({ results, models, languages }) {
     return null;
   }
 
-  // Build a lookup: { `${model_id}-${lang_code}` : result }
+  // Backend returns flat list: [{ model: {id, name, origin}, language: {code, name}, response, cached, ... }]
+  // Build lookup: { `${model_id}-${lang_code}` : result }
   const lookup = {};
   for (const r of results.results) {
-    for (const resp of r.responses || []) {
-      lookup[`${r.model_id}-${resp.language}`] = {
-        model_name: r.model_name,
-        response: resp.response,
-        cached: resp.cached,
-      };
+    const modelId = r.model?.id;
+    const langCode = r.language?.code;
+    if (modelId && langCode) {
+      lookup[`${modelId}-${langCode}`] = r;
     }
   }
 
-  const selectedModels = results.results.map((r) => ({
-    id: r.model_id,
-    name: r.model_name,
-  }));
+  // Extract unique model ids and language codes from results
+  const modelIds = [...new Set(results.results.map((r) => r.model?.id).filter(Boolean))];
+  const langCodes = [...new Set(results.results.map((r) => r.language?.code).filter(Boolean))];
 
-  const selectedLanguages = languages.filter((l) =>
-    results.results[0]?.responses?.some((resp) => resp.language === l.code)
-  );
+  const selectedModels = modelIds.map((id) => {
+    const r = results.results.find((r) => r.model?.id === id);
+    return { id, name: r.model?.name || id };
+  });
+
+  const selectedLanguages = langCodes
+    .map((code) => {
+      const lang = languages.find((l) => l.code === code);
+      const r = results.results.find((r) => r.language?.code === code);
+      return { code, name: lang?.name || code, native_name: lang?.native_name || r?.language?.name || code };
+    });
 
   return (
     <div className="space-y-4">
@@ -96,9 +101,8 @@ export default function ResultsGrid({ results, models, languages }) {
 
           {/* Data rows */}
           {selectedModels.map((model) => (
-            <>
+            <Fragment key={`row-${model.id}`}>
               <div
-                key={`label-${model.id}`}
                 className="flex items-center text-sm font-medium text-gray-300 pr-2"
               >
                 {model.name}
@@ -110,7 +114,7 @@ export default function ResultsGrid({ results, models, languages }) {
                   language={lang}
                 />
               ))}
-            </>
+            </Fragment>
           ))}
         </div>
       </div>
