@@ -51,24 +51,3 @@ export interface CompareResponse {
 }
 
 export const RTL_CODES = new Set(["ar", "he"]);
-
-export const CATEGORY_COLORS: Record<TopicCategory, { bg: string; text: string; border: string }> =
-  {
-    territorial: { bg: "bg-red-950/50", text: "text-red-400", border: "border-red-800" },
-    religious: { bg: "bg-purple-950/50", text: "text-purple-400", border: "border-purple-800" },
-    historical: { bg: "bg-amber-950/50", text: "text-amber-400", border: "border-amber-800" },
-    ideological: { bg: "bg-blue-950/50", text: "text-blue-400", border: "border-blue-800" },
-  };
-
-export const COUNTRY_FLAGS: Record<string, string> = {
-  US: "🇺🇸",
-  China: "🇨🇳",
-  UK: "🇬🇧",
-  France: "🇫🇷",
-  Germany: "🇩🇪",
-  India: "🇮🇳",
-  Japan: "🇯🇵",
-  SouthKorea: "🇰🇷",
-  Canada: "🇨🇦",
-  UAE: "🇦🇪",
-};

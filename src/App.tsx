@@ -6,6 +6,8 @@ import { ModelSelector } from "@/components/ModelSelector";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { CompareButton } from "@/components/CompareButton";
 import { ResultsGrid } from "@/components/ResultsGrid";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
 import { Globe } from "lucide-react";
 
 function App() {
@@ -66,21 +68,19 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <header className="border-b border-border bg-card">
+      <header className="border-b">
         <div className="mx-auto flex max-w-7xl items-center gap-3 px-6 py-4">
-          <Globe className="h-6 w-6 text-primary" />
-          <h1 className="text-xl font-bold text-card-foreground">WorldPol</h1>
+          <Globe className="text-primary" />
+          <h1 className="text-xl font-bold">WorldPol</h1>
           <span className="text-sm text-muted-foreground">AI Political Bias Comparison Tool</span>
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="mx-auto max-w-7xl space-y-6 px-6 py-8">
         {error && (
-          <div className="rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-            {error}
-          </div>
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
         )}
 
         {topics.length > 0 && (
@@ -113,18 +113,20 @@ function App() {
         <CompareButton onClick={handleCompare} disabled={!canCompare} loading={loading} />
 
         {results && (
-          <ResultsGrid
-            data={results}
-            models={models}
-            languages={languages}
-            selectedModelIds={selectedModels}
-            selectedLanguageCodes={selectedLanguages}
-          />
+          <>
+            <Separator />
+            <ResultsGrid
+              data={results}
+              models={models}
+              languages={languages}
+              selectedModelIds={selectedModels}
+              selectedLanguageCodes={selectedLanguages}
+            />
+          </>
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-card">
+      <footer className="border-t">
         <div className="mx-auto max-w-7xl px-6 py-4 text-center text-xs text-muted-foreground">
           WorldPol — Comparing AI model biases across languages and cultures
         </div>
