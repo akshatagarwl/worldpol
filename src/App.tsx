@@ -8,7 +8,7 @@ import { CompareButton } from "@/components/CompareButton";
 import { ResultsGrid } from "@/components/ResultsGrid";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
-import { Globe } from "lucide-react";
+import { GlobeLogo } from "@/components/GlobeLogo";
 
 function App() {
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -70,7 +70,7 @@ function App() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b">
         <div className="mx-auto flex max-w-7xl items-center gap-3 px-6 py-4">
-          <Globe className="text-primary" />
+          <GlobeLogo />
           <h1 className="text-xl font-bold">WorldPol</h1>
           <span className="text-sm text-muted-foreground">AI Political Bias Comparison Tool</span>
         </div>
